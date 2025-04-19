@@ -1,3 +1,4 @@
+README.md
 pyproject.toml
 scripts/eval_continue.py
 scripts/eval_reference.py
