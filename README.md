@@ -11,10 +11,14 @@
 - **Streaming Synthesis**: SLED supports streaming synthesis, enabling speech generation to start as soon as the text stream begins.
 - **Voice Cloning**: Capable of generating speech based on a 3-second prefix or reference utterance as prompt.
 
+
+
 ## Demo
 You can check SLED in action by exploring the [demo page](https://sled-demo.github.io/).
-
-<img src="https://github.com/user-attachments/assets/f48848b0-58d9-403a-86d1-80683565a4d7" width="500"/>
+<div style="display: flex;">
+   <img src="https://github.com/user-attachments/assets/0f6ee8a0-4258-48a2-a670-5556672dbc18" width="200" style="margin-right: 20px;"/>
+   <img src="https://github.com/user-attachments/assets/f48848b0-58d9-403a-86d1-80683565a4d7" width="500"/>
+</div>
 
 ## Available Models on Hugging Face
 
