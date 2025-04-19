@@ -44,33 +44,50 @@ pip install -e ./
 We currently utilize the sum of the first 8 embedding vectors from [Encodec_24khz](https://huggingface.co/facebook/encodec_24khz) as the continuous latent vector. To proceed, ensure that [Encodec_24khz](https://huggingface.co/facebook/encodec_24khz) is downloaded and cached in your HuggingFace dir.
 
 ### Inference
+- Set the `CHECKPOINT` variable to the path of the cached **[SLED-TTS-Libriheavy](https://huggingface.co/ICTNLP/SLED-TTS-Libriheavy)** or **[SLED-TTS-Streaming-Libriheavy](https://huggingface.co/ICTNLP/SLED-TTS-Streaming-Libriheavy)** model.
+- Diverse generation results can be obtained by varying the `SEED` variable.
 ``` sh
 CHECKPOINT=/path/to/checkpoint
 CFG=2.0
-
-# Offline Inference
+SEED=0
+```
+***Offline Inference***
+``` sh
 python scripts/run_offline.py \
     --model_name_or_path ${CHECKPOINT} \
     --cfg ${CFG} \
     --input "My remark pleases him, but I soon prove to him that it is not the right way to speak. However perfect may have been the language of that ancient writer." \
-    --seed 42
-
-# Or Streaming Inference
+    --seed ${SEED}
+```
+***Streaming Inference***
+``` sh
 python scripts/run_stream.py \
     --model_name_or_path ${CHECKPOINT} \
     --cfg ${CFG} \
     --input "My remark pleases him, but I soon prove to him that it is not the right way to speak. However perfect may have been the language of that ancient writer." \
-    --seed 42
+    --seed ${SEED}
 # Please note that we have simulated the generation in a streaming environment in run_stream.py for evaluating its quality.
 # However, the existing code does not actually provide a streaming API.
+```
+***Voice Clone***
+
+You can adjust the prompt speech by setting `--prompt_text` and `--prompt_audio`.
+``` sh
+python scripts/run_voice_clone.py \
+    --prompt_text "Were I in the warm room with all the splendor and magnificence!" \
+    --prompt_audio "example_prompt.flac" \
+    --model_name_or_path ${CHECKPOINT} \
+    --cfg ${CFG} \
+    --input "Perhaps the other trees from the forest will come to look at me!" \
+    --seed ${SEED}
 ```
 
 ### Training
 
-*Data Processing*
+***Data Processing***
 #TODO
 
-*Training Offline Model*
+***Training Offline Model***
 ``` sh
 OUTPUT_DIR=./runs/libriheavy
 mkdir -p $OUTPUT_DIR
@@ -118,7 +135,7 @@ torchrun --nnodes ${WORLD_SIZE} --node_rank ${RANK} --nproc_per_node 8 --master_
 
 ```
 
-*Training Streaming Model*
+***Training Streaming Model***
 ``` sh
 OUTPUT_DIR=./runs/libriheavy_stream
 mkdir -p $OUTPUT_DIR
