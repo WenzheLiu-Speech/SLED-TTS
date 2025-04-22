@@ -45,6 +45,7 @@ We currently utilize the sum of the first 8 embedding vectors from [Encodec_24kh
 ### Inference
 - Set the `CHECKPOINT` variable to the path of the cached **[SLED-TTS-Libriheavy](https://huggingface.co/ICTNLP/SLED-TTS-Libriheavy)** or **[SLED-TTS-Streaming-Libriheavy](https://huggingface.co/ICTNLP/SLED-TTS-Streaming-Libriheavy)** model.
 - Diverse generation results can be obtained by varying the `SEED` variable.
+- Use `-bf16` flag to enable bf16 inference.
 ``` sh
 CHECKPOINT=/path/to/checkpoint
 CFG=2.0
@@ -182,7 +183,14 @@ torchrun --nnodes ${WORLD_SIZE} --node_rank ${RANK} --nproc_per_node 8 --master_
     --disable_tqdm True \
     --ddp_timeout 3600 --overwrite_output_dir
 ```
-
+### BF16 Support
+By setting the `-bf16` flag, the model will load in bf16 during inference and in fp32 during training (for mixed precision training). To enable full bf16 training, you can change
+https://github.com/ictnlp/SLED-TTS/blob/69a0a77d37180ec711a21f39f1b6bffa8b068072/scripts/train_libriheavy.py#L298
+to 
+```
+torch_dtype = torch.bfloat16 if training_args.bf16 else None
+```
+However, Encodec should always execute in fp32 to maintain the precision of latents. Therefore, we load Encodec in fp32 and downcast the encoded latent to bf16.
 
 ## Code Contributors
 
