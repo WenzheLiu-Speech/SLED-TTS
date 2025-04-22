@@ -106,7 +106,7 @@ def main():
     
     
     new_embeds = output_sequences[1]
-    new_audio_values = model.codec.decoder(new_embeds.transpose(-1,-2))
+    new_audio_values = model.codec.decoder(new_embeds.transpose(-1,-2).float())
 
     
     output_path = "output.wav"    

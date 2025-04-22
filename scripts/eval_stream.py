@@ -160,7 +160,7 @@ def main():
             new_embeds = output_sequences[1]
             generated_ids = output_sequences[0]
 
-            new_audio_values = model.codec.decoder(new_embeds.transpose(-1,-2))
+            new_audio_values = model.codec.decoder(new_embeds.transpose(-1,-2).float())
 
             wav_len = (generated_ids.ne(eos_token_id).sum(dim=-1)) * STRIDE
             

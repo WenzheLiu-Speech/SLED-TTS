@@ -190,7 +190,7 @@ class SpeechLlamaForCausalLM(LlamaForCausalLM):
             target_channels=self.token_embed_dim,
             z_channels=self.hidden_size,
             width=config.diffloss_w,
-            depth=config.diffloss_d, 
+            depth=config.diffloss_d,
             noise_channels=config.noise_channels,
         )
         
@@ -207,9 +207,9 @@ class SpeechLlamaForCausalLM(LlamaForCausalLM):
         
     def initialize_codec(self, model_args):
         if hasattr(model_args, "codec"):
-            self.codec = EncodecModel.from_pretrained(model_args.codec, torch_dtype=self.model.dtype)
+            self.codec = EncodecModel.from_pretrained(model_args.codec, torch_dtype=torch.float32) # keep encodec model in fp32
         else:
-            self.codec = EncodecModel.from_pretrained(model_args, torch_dtype=self.model.dtype)
+            self.codec = EncodecModel.from_pretrained(model_args, torch_dtype=torch.float32)
         for param in self.codec.parameters():
             param.requires_grad = False
 
@@ -247,12 +247,12 @@ class SpeechLlamaForCausalLM(LlamaForCausalLM):
         text_inputs_embeds = self.model.embed_tokens(input_ids)
         
         with torch.no_grad():
-            encoder_outputs = self.codec.encode(audio_inputs["input_values"].to(self.model.dtype), audio_inputs["padding_mask"], bandwidth=6) #1,b,r,t, 1 due to one chunk
-            speech_inputs_embeds = self.codec.quantizer.decode(encoder_outputs.audio_codes[0].transpose(0, 1)) #b,d,t
+            encoder_outputs = self.codec.encode(audio_inputs["input_values"], audio_inputs["padding_mask"], bandwidth=6) #1,b,r,t, 1 due to one chunk
+            speech_inputs_embeds = self.codec.quantizer.decode(encoder_outputs.audio_codes[0].transpose(0, 1)) #b,d,t, always fp32
             
             speech_attention_mask = audio_inputs["padding_mask"][..., ::320]
             assert speech_inputs_embeds.size(-1) == speech_attention_mask.size(-1)
-            speech_inputs_embeds = speech_inputs_embeds.transpose(1,2) #b,t,d
+            speech_inputs_embeds = speech_inputs_embeds.transpose(1,2).to(self.model.dtype) #b,t,d, support full bf16 training
             
         
         net_speech_inputs_embeds = self.z_proj(speech_inputs_embeds)
@@ -729,10 +729,10 @@ class SpeechLlamaForCausalLM(LlamaForCausalLM):
 
                 # Clone is needed to avoid keeping a hanging ref to outputs.logits which may be very large for first iteration
                 # (the clone itself is always small)
-                next_token_logits = outputs.logits.clone()[:, -1, :].float()
+                next_token_logits = outputs.logits.clone()[:, -1, :]
                 eos_next_token_logits = next_token_logits.clone()
                 if self.infer_cfg != 1.0:
-                    next_token_logits_cfg = outputs_cfg.logits.clone()[:, -1, :].float()
+                    next_token_logits_cfg = outputs_cfg.logits.clone()[:, -1, :]
                     next_token_logits = next_token_logits_cfg + self.infer_cfg * (next_token_logits - next_token_logits_cfg)
                 # Store scores, attentions and hidden_states when required
                 if return_dict_in_generate:

@@ -147,12 +147,12 @@ def main():
             audio_inputs = processor(raw_audio=audio_arrays, sampling_rate=SAMPLING_RATE, return_tensors="pt") # 'padding_mask': b,t  'input_values': b,c,t
             
             
-            encoder_outputs = model.codec.encode(audio_inputs["input_values"].to(model.dtype).to(device), audio_inputs["padding_mask"].to(device), bandwidth=BANDWIDTH) #1,b,r,t, 1 due to one chunk
+            encoder_outputs = model.codec.encode(audio_inputs["input_values"].to(device), audio_inputs["padding_mask"].to(device), bandwidth=BANDWIDTH) #1,b,r,t, 1 due to one chunk
             speech_inputs_embeds = model.codec.quantizer.decode(encoder_outputs.audio_codes[0].transpose(0, 1)) #b,d,t
             
             speech_attention_mask = audio_inputs["padding_mask"][..., ::STRIDE].to(device)
             assert speech_inputs_embeds.size(-1) == speech_attention_mask.size(-1)
-            speech_inputs_embeds = speech_inputs_embeds.transpose(1,2) #b,t,d
+            speech_inputs_embeds = speech_inputs_embeds.transpose(1,2).to(model.dtype) #b,t,d
             
             
             speech_inputs_embeds = speech_inputs_embeds[:,:FREQ * PROMPT_LEN,:]
@@ -177,7 +177,7 @@ def main():
             new_embeds = output_sequences[1]
             generated_ids = output_sequences[0][:, text_input_length:]
 
-            new_audio_values = model.codec.decoder(new_embeds.transpose(-1,-2))
+            new_audio_values = model.codec.decoder(new_embeds.transpose(-1,-2).float())
 
             wav_len = (generated_ids.ne(eos_token_id).sum(dim=-1) + speech_input_length) * STRIDE
             

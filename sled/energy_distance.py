@@ -59,7 +59,7 @@ class ScoreLossZ(nn.Module):
             z = z_1 * cfg + (1 - cfg) * z_2
 
         noise = torch.randn((z.shape[0], self.noise_channels), dtype=z.dtype, device=z.device)
-        return self.net(noise, z).float()
+        return self.net(noise, z)
 
 
 
