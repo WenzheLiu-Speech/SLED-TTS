@@ -3,6 +3,8 @@
 [![WeChat AI](https://img.shields.io/badge/WeChat%20AI-4CAF50?style=flat&logo=wechat)](https://www.wechat.com)
 [![ICT/CAS](https://img.shields.io/badge/ICT%2FCAS-0066cc?style=flat&logo=school)](https://ict.cas.cn)
 
+## News
+- Update a guide [here](https://github.com/ictnlp/SLED-TTS?tab=readme-ov-file#bf16-support) to train a continuous autoregressive model in bf16.
 
 
 ## Key features
