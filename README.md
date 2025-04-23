@@ -186,7 +186,7 @@ torchrun --nnodes ${WORLD_SIZE} --node_rank ${RANK} --nproc_per_node 8 --master_
     --ddp_timeout 3600 --overwrite_output_dir
 ```
 ### BF16 Support
-By setting the `-bf16` flag, the model will load in bf16 during inference and in fp32 during training (for mixed precision training). To enable full bf16 training, you can change
+By setting the `-bf16` flag, the model will load in bf16 during inference and in fp32 during training (for mixed precision training). To enable pure bf16 training, you can change
 https://github.com/ictnlp/SLED-TTS/blob/69a0a77d37180ec711a21f39f1b6bffa8b068072/scripts/train_libriheavy.py#L298
 to 
 ```
