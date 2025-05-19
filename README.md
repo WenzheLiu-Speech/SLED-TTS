@@ -1,17 +1,15 @@
-# SLED-TTS: Efficient Speech Language Modeling via Energy Distance in Continuous Space
+# 🛷SLED-TTS: Efficient Speech Language Modeling via Energy Distance in Continuous Latent Space
+> **Authors: [Zhengrui Ma](https://scholar.google.com/citations?user=dUgq6tEAAAAJ), [Yang Feng*](https://people.ucas.edu.cn/~yangfeng?language=en), [Chenze Shao](https://scholar.google.com/citations?user=LH_rZf8AAAAJ&hl), [Fandong Meng](https://fandongmeng.github.io/), [Jie Zhou](https://scholar.google.com.hk/citations?user=OijxQCMAAAAJ&hl=en), [Min Zhang](https://scholar.google.com/citations?user=CncXH-YAAAAJ&hl=en)**
+
 [![HuggingFace](https://img.shields.io/badge/HuggingFace-FEC200?style=flat&logo=Hugging%20Face)](https://huggingface.co/collections/ICTNLP/sled-tts-680253e19c889010a1a376ac)
 [![WeChat AI](https://img.shields.io/badge/WeChat%20AI-4CAF50?style=flat&logo=wechat)](https://www.wechat.com)
 [![ICT/CAS](https://img.shields.io/badge/ICT%2FCAS-0066cc?style=flat&logo=school)](https://ict.cas.cn)
 
-## News
-- Update a guide [here](https://github.com/ictnlp/SLED-TTS?tab=readme-ov-file#bf16-support) to train a continuous autoregressive model in bf16.
-
 
 ## Key features
-- **Autoregressive Continuous Modeling**: SLED models speech in a continuous latent space using a speacial type of maximum mean discrepancy as the objective.
+- **Continuous Autoregressive Modeling**: SLED models speech in a continuous latent space, eliminating the need for complex hierarchical architectures.
 - **Streaming Synthesis**: SLED supports streaming synthesis, enabling speech generation to start as soon as the text stream begins.
 - **Voice Cloning**: Capable of generating speech based on a 3-second prefix or reference utterance as prompt.
-
 
 
 ## Demo
@@ -23,14 +21,13 @@ You can check SLED in action by exploring the [demo page](https://sled-demo.gith
 
 ## Available Models on Hugging Face
 
-We have made SLED available on [Hugging Face](https://huggingface.co/collections/ICTNLP/sled-tts-680253e19c889010a1a376ac), currently offering two distinct English models for different use cases:
+We are currently offering two English models trained on LibriHeavy on [Hugging Face](https://huggingface.co/collections/ICTNLP/sled-tts-680253e19c889010a1a376ac):
 
-1. **[SLED-TTS-Libriheavy](https://huggingface.co/ICTNLP/SLED-TTS-Libriheavy)**: This model is trained on the Libriheavy dataset and provides high-quality text-to-speech synthesis.
+1. **[SLED-TTS-Libriheavy](https://huggingface.co/ICTNLP/SLED-TTS-Libriheavy)**: This model is trained on Libriheavy and provides high-quality text-to-speech synthesis.
   
-2. **[SLED-TTS-Streaming-Libriheavy](https://huggingface.co/ICTNLP/SLED-TTS-Streaming-Libriheavy)**: This variant supports **streaming decoding**, which generates a 0.6-second speech chunk for every 5 text tokens received. It’s ideal for applications requiring low-latency audio generation.
+2. **[SLED-TTS-Streaming-Libriheavy](https://huggingface.co/ICTNLP/SLED-TTS-Streaming-Libriheavy)**: This variant supports **streaming decoding**, which generates a 0.6-second speech chunk for every 5 text tokens received.
 
-
-The Mandarin models are on the way! Alternatively, you can train your own SLED-TTS models by following the guidelines below.
+**Alternatively, you can train SLED on your own data by following the guidelines below.**
 
 ## Usage
 **We provide the training and inference code for SLED-TTS.**
@@ -87,7 +84,12 @@ python scripts/run_voice_clone.py \
 ### Training
 
 ***Data Processing***
-#TODO
+
+Process the LibriHeavy data so that each line follows the JSON format shown below.
+```
+{"id": "large/10022/essayoncriticism_1505_librivox_64kb_mp3/essayoncriticism_01_pope_64kb_5", "start": 610.32, "duration": 19.76, "supervisions": [{"text": "Hail! bards triumphant! born in happier days; Immortal heirs of universal praise! Whose honors with increase of ages grow, As streams roll down, enlarging as they flow; Nations unborn your mighty names shall sound, [193] And worlds applaud that must not yet be found!"}], "recording": {"sources": [{"source": "download/librilight/large/10022/essayoncriticism_1505_librivox_64kb_mp3/essayoncriticism_01_pope_64kb.flac"}], "sampling_rate": 16000}, "type": "MonoCut"}
+```
+Or you can use the manifest of LibriHeavy available at this [URL](https://huggingface.co/datasets/ICTNLP/LibriHeavy_manifest). For your own datasets, process them into a similar format.
 
 ***Training Offline Model***
 ``` sh
@@ -194,18 +196,16 @@ torch_dtype = torch.bfloat16 if training_args.bf16 else None
 ```
 However, Encodec should always execute in fp32 to maintain the precision of latents. Therefore, we load Encodec in fp32 and downcast the encoded latent to bf16.
 
-## Code Contributors
-
-- [Zhengrui Ma](https://scholar.google.com/citations?user=dUgq6tEAAAAJ)
-- [Chenze Shao](https://scholar.google.com/citations?user=LH_rZf8AAAAJ)
-
-
-
-## Ackonwledgement
-This work is inspired by following great works:
-- A Proper Loss Is All You Need: Autoregressive Image Generation in Continuous Space via Score Maximization
-- Autoregressive Image Generation without Vector Quantization
-- A Spectral Energy Distance for Parallel Speech Synthesis
 
 ## Citation
-#TODO
+If you have any questions, please feel free to submit an issue or contact `mazhengrui21b@ict.ac.cn`.
+
+If our work is useful for you, please cite as:
+
+```
+@article{ma-etal-2025-sled-tts,
+  title={Efficient Speech Language Modeling via Energy Distance in Continuous Space},
+  author={Zhengrui Ma, Yang Feng, Chenze Shao, Fandong Meng, Jie Zhou, Min zhang},
+  year={2025}
+}
+```
