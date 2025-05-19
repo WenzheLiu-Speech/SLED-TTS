@@ -205,7 +205,7 @@ If our work is useful for you, please cite as:
 ```
 @article{ma-etal-2025-sled-tts,
   title={Efficient Speech Language Modeling via Energy Distance in Continuous Space},
-  author={Zhengrui Ma, Yang Feng, Chenze Shao, Fandong Meng, Jie Zhou, Min zhang},
+  author={Zhengrui Ma and Yang Feng and Chenze Shao and Fandong Meng and Jie Zhou and Min zhang},
   year={2025}
 }
 ```
