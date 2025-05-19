@@ -6,7 +6,7 @@ import pdb
 
 
 class ScoreLossZ(nn.Module):
-    """Diffusion Loss"""
+    """Energy Distance Loss"""
     def __init__(self, target_channels, z_channels, depth, width, beta=1, gamma=1, noise_channels=16):
         super(ScoreLossZ, self).__init__()
         self.noise_channels = noise_channels
@@ -121,7 +121,7 @@ class FinalLayer(nn.Module):
 
 class SimpleMLPAdaLN(nn.Module):
     """
-    The MLP for Diffusion Loss.
+    The MLP for Energy Distance Loss.
     :param in_channels: channels in the input Tensor.
     :param model_channels: base channel count for the model.
     :param out_channels: channels in the output Tensor.
