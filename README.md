@@ -1,10 +1,14 @@
 # 🛷SLED-TTS: Efficient Speech Language Modeling via Energy Distance in Continuous Latent Space
 > **Authors: [Zhengrui Ma](https://scholar.google.com/citations?user=dUgq6tEAAAAJ), [Yang Feng*](https://people.ucas.edu.cn/~yangfeng?language=en), [Chenze Shao](https://scholar.google.com/citations?user=LH_rZf8AAAAJ&hl), [Fandong Meng](https://fandongmeng.github.io/), [Jie Zhou](https://scholar.google.com.hk/citations?user=OijxQCMAAAAJ&hl=en), [Min Zhang](https://scholar.google.com/citations?user=CncXH-YAAAAJ&hl=en)**
 
+[![arXiv](https://img.shields.io/badge/arXiv-2505.13181-b31b1b.svg?logo=arXiv)](https://arxiv.org/abs/2505.13181)
+[![code](https://img.shields.io/badge/Github-Code-keygen.svg?logo=github)](https://github.com/ictnlp/SLED-TTS)
 [![HuggingFace](https://img.shields.io/badge/HuggingFace-FEC200?style=flat&logo=Hugging%20Face)](https://huggingface.co/collections/ICTNLP/sled-tts-680253e19c889010a1a376ac)
 [![WeChat AI](https://img.shields.io/badge/WeChat%20AI-4CAF50?style=flat&logo=wechat)](https://www.wechat.com)
 [![ICT/CAS](https://img.shields.io/badge/ICT%2FCAS-0066cc?style=flat&logo=school)](https://ict.cas.cn)
 
+## News
+- **Our paper has been released on [arXiv](https://arxiv.org/abs/2505.13181).**
 
 ## Key features
 - **Continuous Autoregressive Modeling**: SLED models speech in a continuous latent space, eliminating the need for complex hierarchical architectures.
@@ -203,9 +207,13 @@ If you have any questions, please feel free to submit an issue or contact `mazhe
 If our work is useful for you, please cite as:
 
 ```
-@article{ma-etal-2025-sled-tts,
-  title={Efficient Speech Language Modeling via Energy Distance in Continuous Space},
-  author={Zhengrui Ma and Yang Feng and Chenze Shao and Fandong Meng and Jie Zhou and Min Zhang},
-  year={2025}
+@misc{ma2025efficientspeechlanguagemodeling,
+      title={Efficient Speech Language Modeling via Energy Distance in Continuous Latent Space}, 
+      author={Zhengrui Ma and Yang Feng and Chenze Shao and Fandong Meng and Jie Zhou and Min Zhang},
+      year={2025},
+      eprint={2505.13181},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2505.13181}, 
 }
 ```
